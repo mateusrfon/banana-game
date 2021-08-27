@@ -22,7 +22,7 @@ export default class Drawable {
         this.width = width;
         this.playPoints = playWidth;
         this._x = (this.playPoints.end + this.playPoints.start) / 2;
-        this._y = 0;
+        this._y = 65;
         this.floorLevel = floorLevel;
     }
 

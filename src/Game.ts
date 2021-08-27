@@ -1,11 +1,17 @@
 import Player from './Player';
 import Fruit from './Fruit';
+import Enemy from './Enemy';
+
+import emptyHeart from './sprites/heart-empty.png';
+import heart from './sprites/heart.png';
 
 import banana from './sprites/banana.png';
 import orange from './sprites/orange.png';
 import redApple from './sprites/red-apple.png';
 import strawberry from './sprites/strawberry.png';
 import watermelon from './sprites/watermelon.png';
+
+import bomb from './sprites/bomb.png';
 
 export default class Game {
     canvas: HTMLCanvasElement;
@@ -15,7 +21,9 @@ export default class Game {
     intervalsIds: number[];
     score: number;
     fruits: Fruit[];
+    enemies: Enemy[];
     floorlevel: number;
+    life = 4;
 
     constructor(canvas: HTMLCanvasElement, screenWidth: number, screenHeight: number) {
         this.canvas = canvas;
@@ -29,6 +37,7 @@ export default class Game {
         this.floorlevel = screenHeight - 27;
         this.player = new Player(this.context, this.floorlevel, this.playWidth);
         this.fruits = [];
+        this.enemies = [];
         this.score = 0;
     }
 
@@ -37,27 +46,49 @@ export default class Game {
     }
 
     gameLoop(): void {
-        if (Math.random() > 0.95) {
+        //temporarily teste generation
+        if (Math.random() > 0.99) {
             this.newFruit();
+        }
+        //temporarily teste generation
+        if (Math.random() > 0.99) {
+            this.newEnemy();
         }
         this.updateState();
         this.renderGame();
     }
 
+    endGame(): void {
+        this.clearIntervals();
+        alert('Game over! Score: ' + this.score);
+    }
+
     renderGame(): void {
         this.clearScreen();
+        this.drawInfoBar();
+        // desenhar corações
+        // desenhar score
         this.player.draw();
         this.fruits.forEach((fruit) => fruit.draw());
+        this.enemies.forEach((Enemy) => Enemy.draw());
     }
 
     updateState(): void {
         this.updateFruits();
+        this.updateEnemies();
         this.player.update();
     }
 
     updateFruits(): void {
         this.fruits.forEach((fruit) => fruit.update());
-        this.fruits = this.fruits.filter((fruit) => fruit.checkFloor());
+        this.fruits = this.fruits.filter((fruit) => {
+            if (!fruit.checkFloor()) {
+                this.life -= 1;
+                console.log(this.life);
+                if (this.life === 0) this.endGame();
+            }
+            return fruit.checkFloor();
+        });
         this.fruits = this.fruits.filter((fruit) => {
             if (this.player.checkColission(fruit)) {
                 this.updateScore(fruit.value);
@@ -67,6 +98,16 @@ export default class Game {
         });
     }
 
+    updateEnemies(): void {
+        this.enemies.forEach((enemy) => {
+            enemy.update();
+            if (this.player.checkColission(enemy)) {
+                this.endGame();
+            }
+        });
+        this.enemies = this.enemies.filter((enemy) => enemy.checkFloor());
+    }
+
     updateScore(value: number): void {
         this.score += value;
     }
@@ -74,6 +115,10 @@ export default class Game {
     newFruit(): void {
         const fruit = this.randomFruit();
         this.fruits.push(new Fruit(this.context, fruit.sprite, fruit.value, this.playWidth, this.floorlevel));
+    }
+
+    newEnemy(): void {
+        this.enemies.push(new Enemy(this.context, bomb, this.playWidth, this.floorlevel));
     }
 
     onArrowDown(event: KeyboardEvent): void {
@@ -125,9 +170,20 @@ export default class Game {
             return { sprite: redApple, value: 10 };
         } else if (random >= 70 / 100 && random < 1) {
             return { sprite: orange, value: 5 };
-        } else {
-            console.log('something wrong');
         }
+    }
+
+    drawInfoBar(): void {
+        this.context.fillStyle = 'black';
+        this.context.fillRect(0, 0, this.canvas.width, 65);
+        const empty = new Image();
+        empty.src = emptyHeart;
+        const full = new Image();
+        full.src = heart;
+        this.context.drawImage(full, 11, 12, 40, 40);
+        this.context.drawImage(full, 53, 12, 40, 40);
+        this.context.drawImage(full, 95, 12, 40, 40);
+        this.context.drawImage(full, 137, 12, 40, 40);
     }
 }
 
