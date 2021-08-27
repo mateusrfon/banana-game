@@ -38,9 +38,9 @@ export default class Player extends Drawable {
     }
 
     checkColission(obj: Drawable): boolean {
-        const yDist = this.y - obj.y;
-        const xDist = this.x - obj.x;
-        return yDist < 0 && xDist < 0;
+        const xRange = this.x < obj.x + obj.width && this.x + this.width > obj.x;
+        const yRange = this.y < obj.y + obj.width && this.y + this.width > obj.y;
+        return xRange && yRange;
     }
 }
 
