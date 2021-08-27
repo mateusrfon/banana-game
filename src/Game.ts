@@ -58,7 +58,13 @@ export default class Game {
     updateFruits(): void {
         this.fruits.forEach((fruit) => fruit.update());
         this.fruits = this.fruits.filter((fruit) => fruit.checkFloor());
-        this.fruits = this.fruits.filter((fruit) => !this.player.checkColission(fruit));
+        this.fruits = this.fruits.filter((fruit) => {
+            if (this.player.checkColission(fruit)) {
+                this.updateScore(fruit.value);
+                return false;
+            }
+            return true;
+        });
     }
 
     updateScore(value: number): void {
