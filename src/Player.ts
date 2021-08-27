@@ -7,24 +7,25 @@ export default class Player extends Drawable {
     moveLeft: boolean;
     moveRight: boolean;
 
-    constructor(context: CanvasRenderingContext2D, floorLevel: number) {
-        const sprite = new Image();
-        sprite.src = alienFacingRight;
+    constructor(context: CanvasRenderingContext2D, floorLevel: number, playWidth: Playwidth) {
+        const image = new Image();
+        image.src = alienFacingRight;
         const size = 1 / 5;
-        super(context, sprite, sprite.width * size, sprite.height * size);
+        super(context, image, image.width * size, image.height * size, playWidth, floorLevel);
 
-        this.y = floorLevel - sprite.height * size - 27;
+        this.y = floorLevel - image.height * size;
         this.moveLeft = false;
         this.moveRight = false;
+        this.playPoints = playWidth;
     }
 
     move(direction: string): void {
         if (direction === 'left') {
             this.sprite.src = alienFacingLeft;
-            this.x -= 5;
+            if (this.x >= this.playPoints.start) this.x -= 5;
         } else {
             this.sprite.src = alienFacingRight;
-            this.x += 5;
+            if (this.x <= this.playPoints.end - this.width) this.x += 5;
         }
     }
 
@@ -35,4 +36,15 @@ export default class Player extends Drawable {
             this.move('right');
         }
     }
+
+    checkColission(obj: Drawable): boolean {
+        const yDist = this.y - obj.y;
+        const xDist = this.x - obj.x;
+        return yDist < 0 && xDist < 0;
+    }
+}
+
+interface Playwidth {
+    start: number;
+    end: number;
 }

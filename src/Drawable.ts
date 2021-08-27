@@ -3,16 +3,27 @@ export default class Drawable {
     sprite: HTMLImageElement;
     height: number;
     width: number;
+    playPoints: Playwidth;
     private _x: number;
     private _y: number;
+    floorLevel: number;
 
-    constructor(context: CanvasRenderingContext2D, sprite: HTMLImageElement, width: number, height: number) {
+    constructor(
+        context: CanvasRenderingContext2D,
+        sprite: HTMLImageElement,
+        width: number,
+        height: number,
+        playWidth: Playwidth,
+        floorLevel: number,
+    ) {
         this.context = context;
         this.sprite = sprite;
         this.height = height;
         this.width = width;
-        this._x = 50;
-        this._y = 50;
+        this.playPoints = playWidth;
+        this._x = (this.playPoints.end + this.playPoints.start) / 2;
+        this._y = 0;
+        this.floorLevel = floorLevel;
     }
 
     draw(): void {
@@ -36,4 +47,9 @@ export default class Drawable {
     set y(value: number) {
         this._y = value;
     }
+}
+
+interface Playwidth {
+    start: number;
+    end: number;
 }
