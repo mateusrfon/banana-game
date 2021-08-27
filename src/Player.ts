@@ -1,5 +1,6 @@
 import Drawable from './Drawable';
-import alien from './sprites/alien.png';
+import alienFacingRight from './sprites/alienFacingRight.png';
+import alienFacingLeft from './sprites/alienFacingLeft.png';
 
 export default class Player extends Drawable {
     floorLevel: number;
@@ -7,18 +8,24 @@ export default class Player extends Drawable {
     moveRight: boolean;
 
     constructor(context: CanvasRenderingContext2D, floorLevel: number) {
-        const image = new Image();
-        image.src = alien;
+        const sprite = new Image();
+        sprite.src = alienFacingRight;
         const size = 1 / 5;
-        super(context, image, image.width * size, image.height * size);
+        super(context, sprite, sprite.width * size, sprite.height * size);
 
-        this.y = floorLevel - image.height * size;
+        this.y = floorLevel - sprite.height * size - 27;
         this.moveLeft = false;
         this.moveRight = false;
     }
 
     move(direction: string): void {
-        direction === 'left' ? (this.x -= 5) : (this.x += 5);
+        if (direction === 'left') {
+            this.sprite.src = alienFacingLeft;
+            this.x -= 5;
+        } else {
+            this.sprite.src = alienFacingRight;
+            this.x += 5;
+        }
     }
 
     update(): void {

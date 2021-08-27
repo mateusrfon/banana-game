@@ -1,14 +1,14 @@
 export default class Drawable {
     context: CanvasRenderingContext2D;
-    image: CanvasImageSource;
+    sprite: HTMLImageElement;
     height: number;
     width: number;
     private _x: number;
     private _y: number;
 
-    constructor(context: CanvasRenderingContext2D, image: CanvasImageSource, width: number, height: number) {
+    constructor(context: CanvasRenderingContext2D, sprite: HTMLImageElement, width: number, height: number) {
         this.context = context;
-        this.image = image;
+        this.sprite = sprite;
         this.height = height;
         this.width = width;
         this._x = 50;
@@ -17,7 +17,7 @@ export default class Drawable {
 
     draw(): void {
         this.context.beginPath();
-        this.context.drawImage(this.image, this._x, this._y, this.width, this.height);
+        this.context.drawImage(this.sprite, this._x, this._y, this.width, this.height);
         //image, sx , sy, sWidth, sHeight, dx, dy, dWidth, dHeight); (s refers to a cut, d to real position)
     }
 

@@ -62,6 +62,11 @@ export default class Game {
     }
 
     clearScreen(): void {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        const border = this.canvas.width * 0.98;
+        this.context.fillStyle = '#181820';
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.fillStyle = 'white';
+        this.context.fillRect(border, this.canvas.height - 27, this.canvas.width - border * 2, 1);
     }
 }
