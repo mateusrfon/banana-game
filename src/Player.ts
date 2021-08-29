@@ -1,19 +1,23 @@
 import Drawable from './Drawable';
-import alienFacingRight from './sprites/alienFacingRight.png';
-import alienFacingLeft from './sprites/alienFacingLeft.png';
 
 export default class Player extends Drawable {
     floorLevel: number;
+    sprites: PlayerSpritesInterface;
     moveLeft: boolean;
     moveRight: boolean;
 
-    constructor(context: CanvasRenderingContext2D, floorLevel: number, playLimits: Playwidth) {
-        const image = new Image();
-        image.src = alienFacingRight;
-        const size = 1 / 5;
-        super(context, image, image.width * size, image.height * size, playLimits, floorLevel);
+    constructor(
+        context: CanvasRenderingContext2D,
+        sprites: PlayerSpritesInterface,
+        playLimits: Playwidth,
+        floorLevel: number,
+    ) {
+        const width = sprites.facingRight.width;
+        const height = sprites.facingRight.height;
+        super(context, sprites.facingRight, width, height, playLimits, floorLevel);
 
-        this.y = floorLevel - image.height * size;
+        this.sprites = sprites;
+        this.y = floorLevel - height;
         this.moveLeft = false;
         this.moveRight = false;
         this.playLimits = playLimits;
@@ -21,10 +25,10 @@ export default class Player extends Drawable {
 
     move(direction: string): void {
         if (direction === 'left') {
-            this.sprite.src = alienFacingLeft;
+            this.sprite = this.sprites.facingLeft;
             if (this.x >= this.playLimits.start) this.x -= 5;
         } else {
-            this.sprite.src = alienFacingRight;
+            this.sprite = this.sprites.facingRight;
             if (this.x <= this.playLimits.end - this.width) this.x += 5;
         }
     }
@@ -47,4 +51,9 @@ export default class Player extends Drawable {
 interface Playwidth {
     start: number;
     end: number;
+}
+
+interface PlayerSpritesInterface {
+    facingLeft: HTMLImageElement;
+    facingRight: HTMLImageElement;
 }

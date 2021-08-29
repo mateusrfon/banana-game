@@ -1,19 +1,16 @@
 import Drawable from './Drawable';
 
-export default class Fruit extends Drawable {
+export default class Dropable extends Drawable {
     value: number;
 
     constructor(
         context: CanvasRenderingContext2D,
-        sprite: string,
+        sprite: HTMLImageElement,
         value: number,
         playLimits: Playwidth,
         floorLevel: number,
     ) {
-        const image = new Image();
-        image.src = sprite;
-        const size = 1 / 20;
-        super(context, image, image.width * size, image.height * size, playLimits, floorLevel);
+        super(context, sprite, sprite.width, sprite.height, playLimits, floorLevel);
 
         this.value = value;
         this.x = this.randomX();
