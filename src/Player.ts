@@ -7,25 +7,25 @@ export default class Player extends Drawable {
     moveLeft: boolean;
     moveRight: boolean;
 
-    constructor(context: CanvasRenderingContext2D, floorLevel: number, playWidth: Playwidth) {
+    constructor(context: CanvasRenderingContext2D, floorLevel: number, playLimits: Playwidth) {
         const image = new Image();
         image.src = alienFacingRight;
         const size = 1 / 5;
-        super(context, image, image.width * size, image.height * size, playWidth, floorLevel);
+        super(context, image, image.width * size, image.height * size, playLimits, floorLevel);
 
         this.y = floorLevel - image.height * size;
         this.moveLeft = false;
         this.moveRight = false;
-        this.playPoints = playWidth;
+        this.playLimits = playLimits;
     }
 
     move(direction: string): void {
         if (direction === 'left') {
             this.sprite.src = alienFacingLeft;
-            if (this.x >= this.playPoints.start) this.x -= 5;
+            if (this.x >= this.playLimits.start) this.x -= 5;
         } else {
             this.sprite.src = alienFacingRight;
-            if (this.x <= this.playPoints.end - this.width) this.x += 5;
+            if (this.x <= this.playLimits.end - this.width) this.x += 5;
         }
     }
 
@@ -37,7 +37,7 @@ export default class Player extends Drawable {
         }
     }
 
-    checkColission(obj: Drawable): boolean {
+    isColliding(obj: Drawable): boolean {
         const xRange = this.x < obj.x + obj.width && this.x + this.width > obj.x;
         const yRange = this.y < obj.y + obj.width && this.y + this.width > obj.y;
         return xRange && yRange;

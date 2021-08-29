@@ -7,13 +7,13 @@ export default class Fruit extends Drawable {
         context: CanvasRenderingContext2D,
         sprite: string,
         value: number,
-        playPoints: Playwidth,
+        playLimits: Playwidth,
         floorLevel: number,
     ) {
         const image = new Image();
         image.src = sprite;
         const size = 1 / 20;
-        super(context, image, image.width * size, image.height * size, playPoints, floorLevel);
+        super(context, image, image.width * size, image.height * size, playLimits, floorLevel);
 
         this.value = value;
         this.x = this.randomX();
@@ -24,11 +24,11 @@ export default class Fruit extends Drawable {
     }
 
     randomX(): number {
-        const xPos = Math.random() * (this.playPoints.end - this.playPoints.start);
-        return xPos + this.playPoints.start;
+        const xPos = Math.random() * (this.playLimits.end - this.playLimits.start);
+        return xPos + this.playLimits.start;
     }
 
-    checkFloor(): boolean {
+    isAboveFloor(): boolean {
         return this.y + this.height < this.floorLevel;
     }
 }

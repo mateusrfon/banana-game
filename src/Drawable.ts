@@ -3,7 +3,7 @@ export default class Drawable {
     sprite: HTMLImageElement;
     height: number;
     width: number;
-    playPoints: Playwidth;
+    playLimits: Playwidth;
     private _x: number;
     private _y: number;
     floorLevel: number;
@@ -13,15 +13,15 @@ export default class Drawable {
         sprite: HTMLImageElement,
         width: number,
         height: number,
-        playWidth: Playwidth,
+        playLimits: Playwidth,
         floorLevel: number,
     ) {
         this.context = context;
         this.sprite = sprite;
         this.height = height;
         this.width = width;
-        this.playPoints = playWidth;
-        this._x = (this.playPoints.end + this.playPoints.start) / 2;
+        this.playLimits = playLimits;
+        this._x = (this.playLimits.end + this.playLimits.start) / 2;
         this._y = 65;
         this.floorLevel = floorLevel;
     }

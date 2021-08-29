@@ -1,11 +1,11 @@
 import Drawable from './Drawable';
 
 export default class Enemy extends Drawable {
-    constructor(context: CanvasRenderingContext2D, sprite: string, playPoints: Playwidth, floorLevel: number) {
+    constructor(context: CanvasRenderingContext2D, sprite: string, playLimits: Playwidth, floorLevel: number) {
         const image = new Image();
         image.src = sprite;
         const size = 1 / 4;
-        super(context, image, image.width * size, image.height * size, playPoints, floorLevel);
+        super(context, image, image.width * size, image.height * size, playLimits, floorLevel);
 
         this.x = this.randomX();
     }
@@ -15,11 +15,11 @@ export default class Enemy extends Drawable {
     }
 
     randomX(): number {
-        const xPos = Math.random() * (this.playPoints.end - this.playPoints.start);
-        return xPos + this.playPoints.start;
+        const xPos = Math.random() * (this.playLimits.end - this.playLimits.start);
+        return xPos + this.playLimits.start;
     }
 
-    checkFloor(): boolean {
+    isAboveFloor(): boolean {
         return this.y + this.height < this.floorLevel;
     }
 }

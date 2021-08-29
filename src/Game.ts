@@ -47,13 +47,9 @@ export default class Game {
 
     gameLoop(): void {
         //temporarily teste generation
-        if (Math.random() > 0.99) {
-            this.newFruit();
-        }
-        //temporarily teste generation
-        if (Math.random() > 0.99) {
+        /*if (Math.random() > 0.99) {
             this.newEnemy();
-        }
+        }*/
         this.updateState();
         this.renderGame();
     }
@@ -66,7 +62,6 @@ export default class Game {
     renderGame(): void {
         this.clearScreen();
         this.drawInfoBar();
-        // desenhar corações
         // desenhar score
         this.player.draw();
         this.fruits.forEach((fruit) => fruit.draw());
@@ -82,15 +77,15 @@ export default class Game {
     updateFruits(): void {
         this.fruits.forEach((fruit) => fruit.update());
         this.fruits = this.fruits.filter((fruit) => {
-            if (!fruit.checkFloor()) {
+            if (!fruit.isAboveFloor()) {
                 this.life -= 1;
                 console.log(this.life);
                 if (this.life === 0) this.endGame();
             }
-            return fruit.checkFloor();
+            return fruit.isAboveFloor();
         });
         this.fruits = this.fruits.filter((fruit) => {
-            if (this.player.checkColission(fruit)) {
+            if (this.player.isColliding(fruit)) {
                 this.updateScore(fruit.value);
                 return false;
             }
@@ -101,11 +96,11 @@ export default class Game {
     updateEnemies(): void {
         this.enemies.forEach((enemy) => {
             enemy.update();
-            if (this.player.checkColission(enemy)) {
+            if (this.player.isColliding(enemy)) {
                 this.endGame();
             }
         });
-        this.enemies = this.enemies.filter((enemy) => enemy.checkFloor());
+        this.enemies = this.enemies.filter((enemy) => enemy.isAboveFloor());
     }
 
     updateScore(value: number): void {
@@ -143,7 +138,7 @@ export default class Game {
         this.clearIntervals();
         const { setInterval } = window;
 
-        this.intervalsIds = [setInterval(() => this.gameLoop(), 1000 / 60)];
+        this.intervalsIds = [setInterval(() => this.gameLoop(), 1000 / 60), setInterval(() => this.newFruit(), 1000)];
     }
 
     clearIntervals(): void {
@@ -151,7 +146,6 @@ export default class Game {
     }
 
     clearScreen(): void {
-        //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = '#181820';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = 'white';
@@ -168,8 +162,10 @@ export default class Game {
             return { sprite: watermelon, value: 20 };
         } else if (random >= 40 / 100 && random < 70 / 100) {
             return { sprite: redApple, value: 10 };
-        } else if (random >= 70 / 100 && random < 1) {
+        } else if (random >= 70 / 100 && random <= 1) {
             return { sprite: orange, value: 5 };
+        } else {
+            alert('OH SHIT!');
         }
     }
 
@@ -180,10 +176,10 @@ export default class Game {
         empty.src = emptyHeart;
         const full = new Image();
         full.src = heart;
-        this.context.drawImage(full, 11, 12, 40, 40);
-        this.context.drawImage(full, 53, 12, 40, 40);
-        this.context.drawImage(full, 95, 12, 40, 40);
-        this.context.drawImage(full, 137, 12, 40, 40);
+        this.context.drawImage(this.life >= 1 ? full : empty, 11, 12, 40, 40);
+        this.context.drawImage(this.life >= 2 ? full : empty, 53, 12, 40, 40);
+        this.context.drawImage(this.life >= 3 ? full : empty, 95, 12, 40, 40);
+        this.context.drawImage(this.life === 4 ? full : empty, 137, 12, 40, 40);
     }
 }
 
