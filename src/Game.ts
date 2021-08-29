@@ -1,5 +1,5 @@
 import Player from './Player';
-import Dropable from './Dropables';
+import Dropable from './Dropable';
 
 import { banana, orange, redApple, strawberry, watermelon } from './sprites/FruitSprites';
 import * as heart from './sprites/HeartSprites';

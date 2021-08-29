@@ -17,7 +17,7 @@ export default class Dropable extends Drawable {
     }
 
     update(): void {
-        this.y += 3;
+        this.y += (3 * 543) / this.floorLevel;
     }
 
     randomX(): number {

@@ -24,12 +24,13 @@ export default class Player extends Drawable {
     }
 
     move(direction: string): void {
+        const speed = (5 * (this.playLimits.end - this.playLimits.start)) / 800;
         if (direction === 'left') {
             this.sprite = this.sprites.facingLeft;
-            if (this.x >= this.playLimits.start) this.x -= 5;
+            if (this.x >= this.playLimits.start) this.x -= speed;
         } else {
             this.sprite = this.sprites.facingRight;
-            if (this.x <= this.playLimits.end - this.width) this.x += 5;
+            if (this.x <= this.playLimits.end - this.width) this.x += speed;
         }
     }
 
