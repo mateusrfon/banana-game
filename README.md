@@ -31,5 +31,5 @@ Installs all dependencies
 
 ### `npm run build`
 
-Generate the bundle.js file with the game content./
+Generate the bundle.js file with the game content. <br/>
 Then open ./public/index.html to play the game on your browser
