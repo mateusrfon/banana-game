@@ -1,6 +1,6 @@
 import Player from './Player';
-import Fruit from './gameDropables/Fruit';
-import Bomb from './gameDropables/Bomb';
+import Fruit from './dropables/Fruit';
+import Bomb from './dropables/Bomb';
 
 import * as heart from './HeartSprites';
 
@@ -28,6 +28,7 @@ export default class Game {
         };
         this.floorLevel = screenHeight - 27;
         this.player = new Player(this.context, this.xLimits);
+        this.intervalsIds = [];
         this.fruits = [];
         this.bombs = [];
         this.score = 0;
@@ -50,6 +51,7 @@ export default class Game {
     }
 
     start(): void {
+        if (this.intervalsIds.length > 0) return;
         this.setGame();
         this.startIntervals();
     }
@@ -61,6 +63,7 @@ export default class Game {
 
     endGame(): void {
         this.clearIntervals();
+        this.intervalsIds = [];
         console.log('Game over! Score: ' + this.score);
     }
 
@@ -191,7 +194,6 @@ export default class Game {
         this.context.fillStyle = 'white';
         this.context.font = '24px Lato';
         this.context.fillText(`Score: ${this.score}`, this.canvas.width - 154, 40);
-        console.log(this.canvas.width);
     }
 }
 
