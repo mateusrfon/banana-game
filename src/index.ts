@@ -5,7 +5,7 @@ const screenWidth = window.innerWidth - 20;
 const screenHeight = window.innerHeight - 20;
 
 const game = new Game(canvas, screenWidth, screenHeight);
-game.renderGame();
+game.firstGameRender();
 
 window.addEventListener('keydown', (event: KeyboardEvent) => {
     game.onArrowDown(event);

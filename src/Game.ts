@@ -44,6 +44,19 @@ export default class Game {
         this.bombAudio = new Audio('./assets/bomb.mp3');
     }
 
+    drawGameStart(): void {
+        const newGameString = "Press 'Enter' to start";
+
+        const newGameStringWidth = this.context.measureText(newGameString).width;
+
+        const width = (this.canvas.width - newGameStringWidth) / 2;
+        const height = this.canvas.height / 2;
+
+        this.context.fillStyle = 'white';
+        this.context.font = '24px Lato';
+        this.context.fillText(newGameString, width, height);
+    }
+
     setPlayer(): void {
         this.player.speed = (5 * (this.xLimits.end - this.xLimits.start)) / 800;
         this.player.x = (this.xLimits.end + this.xLimits.start) / 2;
@@ -72,7 +85,31 @@ export default class Game {
     endGame(): void {
         this.clearIntervals();
         this.intervalsIds = [];
-        console.log('Game over! Score: ' + this.score);
+        setTimeout(() => this.drawGameOver(), 100);
+    }
+
+    drawGameOver(): void {
+        const width = this.canvas.width;
+        const height = this.canvas.height / 2;
+
+        const gameOverString = 'Game Over';
+        const scoreString = `Score: ${this.score}`;
+        const reStartString = "Press 'Enter' to re-start";
+
+        const gameOverStringWidth = this.context.measureText(gameOverString).width;
+        const scoreStringWidth = this.context.measureText(scoreString).width;
+        const reStartStringWidth = this.context.measureText(reStartString).width;
+
+        this.context.fillStyle = 'white';
+        this.context.font = '24px Lato';
+        this.context.fillText(gameOverString, (width - gameOverStringWidth) / 2, height - 50);
+        this.context.fillText(scoreString, (width - scoreStringWidth) / 2, height);
+        this.context.fillText(reStartString, (width - reStartStringWidth) / 2, height + 50);
+    }
+
+    firstGameRender(): void {
+        this.renderGame();
+        this.drawGameStart();
     }
 
     renderGame(): void {
@@ -115,7 +152,6 @@ export default class Game {
             this.bananaAudio.play();
         } else {
             const random = Math.random();
-            console.log(random);
             if (random < 0.5) {
                 this.eat2Audio.play();
             } else {
