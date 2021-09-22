@@ -1,3 +1,5 @@
+https://banana-game.vercel.app/
+
 ## 📕 Summary
 
 - [🛠️ Technologies ](#technologies)
@@ -34,3 +36,6 @@ Installs all dependencies
 Generate the bundle.js file with the game content. <br/>
 <br/>
 Then open ./public/index.html to play the game on your browser
+
+### or
+Access https://banana-game.vercel.app/ to view a deployed version of the project
