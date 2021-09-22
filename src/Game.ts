@@ -16,6 +16,10 @@ export default class Game {
     floorLevel: number;
     life: number;
     dropableSpeed: number;
+    eatAudio: HTMLAudioElement;
+    eat2Audio: HTMLAudioElement;
+    bananaAudio: HTMLAudioElement;
+    bombAudio: HTMLAudioElement;
 
     constructor(canvas: HTMLCanvasElement, screenWidth: number, screenHeight: number) {
         this.canvas = canvas;
@@ -34,6 +38,10 @@ export default class Game {
         this.score = 0;
         this.life = 4;
         this.dropableSpeed = (3 * 543) / this.floorLevel;
+        this.eatAudio = new Audio('./assets/eat.mp3');
+        this.eat2Audio = new Audio('./assets/eat2.mp3');
+        this.bananaAudio = new Audio('./assets/nicenana.mp3');
+        this.bombAudio = new Audio('./assets/bomb.mp3');
     }
 
     setPlayer(): void {
@@ -94,11 +102,26 @@ export default class Game {
         });
         this.fruits = this.fruits.filter((fruit) => {
             if (this.player.isColliding(fruit)) {
+                this.playFruitSound(fruit);
                 this.updateScore(fruit.value);
                 return false;
             }
             return true;
         });
+    }
+
+    playFruitSound(fruit: Fruit): void {
+        if (fruit.value === -1) {
+            this.bananaAudio.play();
+        } else {
+            const random = Math.random();
+            console.log(random);
+            if (random < 0.5) {
+                this.eat2Audio.play();
+            } else {
+                this.eatAudio.play();
+            }
+        }
     }
 
     removeOneLife(): void {
@@ -110,6 +133,7 @@ export default class Game {
         this.bombs.forEach((bomb) => {
             bomb.update();
             if (this.player.isColliding(bomb)) {
+                this.bombAudio.play();
                 this.endGame();
             }
         });
