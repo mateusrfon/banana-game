@@ -24,5 +24,7 @@
         "webpack-cli": "^4.8.0",
         "webpack-dev-server": "^4.0.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "npm-check-updates": "^16.14.17"
+    }
 }
