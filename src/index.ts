@@ -8,15 +8,25 @@ const game = new Game(canvas, screenWidth, screenHeight);
 game.firstGameRender();
 
 window.addEventListener('keydown', (event: KeyboardEvent) => {
-    game.onArrowDown(event);
+    if (game.intervalsIds.length === 0) {
+        game.start();
+    } else {
+        game.onArrowDown(event);
+    }
 });
 
 window.addEventListener('keyup', (event: KeyboardEvent) => {
     game.onArrowUp(event);
 });
 
-window.addEventListener('keydown', (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
+window.addEventListener('touchstart', (event: TouchEvent) => {
+    if (game.intervalsIds.length === 0) {
         game.start();
+    } else {
+        game.onTouchStart(event);
     }
+});
+
+window.addEventListener('touchend', () => {
+    game.onTouchEnd();
 });

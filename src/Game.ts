@@ -45,7 +45,7 @@ export default class Game {
     }
 
     drawGameStart(): void {
-        const newGameString = "Press 'Enter' to start";
+        const newGameString = 'Press to start';
 
         const newGameStringWidth = this.context.measureText(newGameString).width;
 
@@ -72,7 +72,6 @@ export default class Game {
     }
 
     start(): void {
-        if (this.intervalsIds.length > 0) return;
         this.setGame();
         this.startIntervals();
     }
@@ -94,7 +93,7 @@ export default class Game {
 
         const gameOverString = 'Game Over';
         const scoreString = `Score: ${this.score}`;
-        const reStartString = "Press 'Enter' to re-start";
+        const reStartString = 'Press to re-start';
 
         const gameOverStringWidth = this.context.measureText(gameOverString).width;
         const scoreStringWidth = this.context.measureText(scoreString).width;
@@ -205,6 +204,16 @@ export default class Game {
         }
     }
 
+    onTouchStart(event: TouchEvent): void {
+        const touch = event.touches[0];
+        if (touch.pageX < this.canvas.width / 2 && this.player.x >= this.xLimits.start) {
+            this.player.setMoveLeft();
+        }
+        if (touch.pageX > this.canvas.width / 2 && this.player.x <= this.xLimits.end - this.player.sprite.width) {
+            this.player.setMoveRight();
+        }
+    }
+
     onArrowUp(event: KeyboardEvent): void {
         if (event.key === 'ArrowLeft') {
             this.player.stopMovingLeft();
@@ -212,6 +221,11 @@ export default class Game {
         if (event.key === 'ArrowRight') {
             this.player.stopMovingRight();
         }
+    }
+
+    onTouchEnd(): void {
+        this.player.stopMovingLeft();
+        this.player.stopMovingRight();
     }
 
     startIntervals(): void {
